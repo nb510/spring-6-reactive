@@ -43,7 +43,7 @@ public class BeerController {
     @PutMapping(BEER_PATH_ID)
     public Mono<ResponseEntity<Void>> updateBeer(@PathVariable("beerId") Long beerId, @RequestBody BeerDTO beerDTO) {
         return beerService.updateBeer(beerId, beerDTO)
-                .map(beer -> ResponseEntity.ok().build());
+                .map(beer -> ResponseEntity.noContent().build());
     }
 
     @PatchMapping(BEER_PATH_ID)
@@ -54,6 +54,6 @@ public class BeerController {
 
     @DeleteMapping(BEER_PATH_ID)
     public Mono<ResponseEntity<Void>> deleteBeerById(@PathVariable("beerId") Long beerId) {
-        return beerService.deleteBeerById(beerId).map(response -> ResponseEntity.ok().build());
+        return beerService.deleteBeerById(beerId).thenReturn(ResponseEntity.noContent().build());
     }
 }
