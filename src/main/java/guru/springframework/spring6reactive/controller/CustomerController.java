@@ -13,8 +13,8 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class CustomerController {
 
-    private static final String CUSTOMER_PATH = "/api/v2/customer";
-    private static final String CUSTOMER_PATH_ID = "/api/v2/customer/{customerId}";
+    public static final String CUSTOMER_PATH = "/api/v2/customer";
+    public static final String CUSTOMER_PATH_ID = "/api/v2/customer/{customerId}";
 
     private final CustomerService customerService;
 
@@ -43,7 +43,7 @@ public class CustomerController {
     public Mono<ResponseEntity<Void>> updateCustomer(@PathVariable("customerId") Long customerId,
                                                      @RequestBody CustomerDTO customerDTO) {
         return customerService.updateCustomer(customerId, customerDTO)
-                .map(response -> ResponseEntity.ok().build());
+                .map(response -> ResponseEntity.noContent().build());
     }
 
     @PatchMapping(CUSTOMER_PATH_ID)
@@ -56,6 +56,6 @@ public class CustomerController {
     @DeleteMapping(CUSTOMER_PATH_ID)
     public Mono<ResponseEntity<Void>> deleteCustomer(@PathVariable("customerId") Long customerId) {
         return customerService.deleteCustomerById(customerId)
-                .map(response -> ResponseEntity.ok().build());
+                .thenReturn(ResponseEntity.noContent().build());
     }
 }
