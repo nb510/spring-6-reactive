@@ -1,6 +1,5 @@
 package guru.springframework.spring6reactive.controller;
 
-import guru.springframework.spring6reactive.domain.Beer;
 import guru.springframework.spring6reactive.dto.BeerDTO;
 import guru.springframework.spring6reactive.repository.BeerRepositoryTest;
 import org.junit.jupiter.api.MethodOrderer;
@@ -25,11 +24,26 @@ class BeerControllerTest {
     WebTestClient webTestClient;
 
     @Test
+    void testBeerNotFound() {
+        webTestClient.get().uri(BEER_PATH_ID, 100)
+                .exchange()
+                .expectStatus().isNotFound();
+    }
+
+    @Test
+    void testUpdateBeerNotFound() {
+        webTestClient.get().uri(BEER_PATH_ID, 100)
+                .exchange()
+                .expectStatus().isNotFound();
+    }
+
+    @Test
     @Order(999)
     void testDeleteBeer() {
-        webTestClient.delete().uri(BEER_PATH_ID, 1)
+        webTestClient.put().uri(BEER_PATH_ID, 100)
+                .body(Mono.just(BeerRepositoryTest.getTestBeer()), BeerDTO.class)
                 .exchange()
-                .expectStatus().isNoContent();
+                .expectStatus().isNotFound();
     }
     
     @Test
